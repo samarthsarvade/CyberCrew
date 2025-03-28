@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberCrew News</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            transition: background-color 0.3s, color 0.3s;
+            background-image: "static/hacker.gif";
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .news-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+        }
+
+        .news-item h2 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .news-item h2 a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .news-item h2 a:hover {
+            text-decoration: underline;
+        }
+
+        .news-item p {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .summary {
+            display: none;
+            max-height: 100px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            color: #444;
+        }
+
+        .summary::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .summary::-webkit-scrollbar-thumb {
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+
+        .expand-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .expand-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Page Title -->
+    <h1>Cyber Feeds Incident</h1>
+  
+    <!-- News Grid -->
+    <div class="row">
+        {% for news in news_list %}
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="news-item mb-4 position-relative">
+                    <h2 class="card-title"><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h2>
+                    {% if 'No date' in news.date %}
+                        <p class="card-text text-danger">No date available</p>
+                    {% else %}
+                        <p class="card-text">Published on: {{ news.date }}</p>
+                    {% endif %}
+                    <div class="summary">
+                        <p>{{ news.description or 'No description available.' }}</p>
+                    </div>
+                    <button class="expand-btn" onclick="toggleSummary(this)">&#x25BC;</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function toggleSummary(button) {
+        const summary = button.parentElement.querySelector('.summary');
+        const isVisible = summary.style.display === 'block';
+        summary.style.display = isVisible ? 'none' : 'block';
+        button.innerHTML = isVisible ? '&#x25BC;' : '&#x25B2;'; // Toggle Arrow Down/Up
+    }
+</script>
+
+</body>
+</html>
